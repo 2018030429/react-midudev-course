@@ -10,16 +10,22 @@ import getGifs from '../services/getGifs';
 import Gif from "./Gif";
 
 interface Props {
-  keyword?: string
+  params: {
+    keyword:string
+  }
 }
 
-const ListOfGifs = ({ keyword }:Props) => {
+const ListOfGifs = ({ params: { keyword } }:Props) => {
 
   const [gifs, setGifs] = useState<GifModel[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getGifs(keyword).then(setGifs);
+    setLoading(true);
+    getGifs(keyword).then(setGifs).then(_ => setLoading(false));
   }, [keyword]);
+
+  if (loading) return <i>Loading...</i>
 
   return (
     <Fragment>
