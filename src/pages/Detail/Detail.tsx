@@ -1,8 +1,8 @@
 import React from 'react'
-import Gif from '../../components/Gif/Gif';
+import Gif from 'components/Gif/Gif';
 
 // * Custom Hooks
-import { useGlobalGifs } from '../../hooks/useGlobalGifs';
+import { useGlobalGifs } from 'hooks/useGlobalGifs';
 
 interface Props {
   params: {

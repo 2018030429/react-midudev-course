@@ -1,23 +1,23 @@
 import { GiphyResponse } from "../models/GiphyResponse";
 import { GifModel } from "../models/Gif";
+import { API_KEY, API_BASE } from "./settings";
 
-const apiBase = 'https://api.giphy.com/v1/gifs/search';
-const apiKey = 'es66ZJsaX36FCas5sotJZ0Bfhnm3CXmK';
-const options = '&limit=25&offset=0&rating=g&lang=en'
-
-const getGifs = (keyword:string = 'chihuahua') => {
-  const apiURL = `${apiBase}?api_key=${apiKey}&q=${keyword}${options}`;
-  return fetch(apiURL)
-  .then(res => res.json())
-  .then(res => {
-    const { data } = res as GiphyResponse;
+const fromApiResponseToGifs = (apiResponse:any) => {
+  const { data } = apiResponse as GiphyResponse;
     const gifs = data.map(img => {
       const { images, title, id } = img; 
       const { url } = img.images.downsized_medium;
       return { images, title, url, id }
     });
     return gifs as GifModel[];
-  });
+}
+
+const getGifs = async (keyword='chihuahua', limit=25, page=0) => {
+  const apiURL = 
+    `${API_BASE}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=${page*limit}&rating=g&lang=en`;
+  return fetch(apiURL)
+  .then(res => res.json())
+  .then(fromApiResponseToGifs);
 }
 
 export default getGifs;

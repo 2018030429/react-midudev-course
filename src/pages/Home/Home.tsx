@@ -1,13 +1,12 @@
 import React, { Fragment, useState } from 'react'
-import { Link, useLocation } from "wouter";
+import { useLocation } from "wouter";
 
 // * Custom Hooks
-import { useGifs } from '../../hooks/useGifs';
+import { useGifs } from 'hooks/useGifs';
 
 // * Components
-import ListOfGifs from '../../components/ListOfGifs/ListOfGifs';
-
-const POPULAR_GIFS = ['Chihuhua', 'Cat', 'Panda', 'Duck'];
+import ListOfGifs from 'components/ListOfGifs/ListOfGifs';
+import Trending from 'components/Trending/Trending';
 
 const Home = () => {
   const [ keyword, setKeyword ] = useState('');
@@ -30,18 +29,15 @@ const Home = () => {
           value={keyword} onChange={handleChange} />
         <button>Search!!</button>
       </form>
-      <h3 className="App-title">Last search</h3>
-      <ListOfGifs gifs={gifs!} />
-      <h3 className="App-title">The most popular gifs</h3>
-      <ul>
-        {
-          POPULAR_GIFS.map(gif => (
-            <li key={gif}>
-              <Link to={`/search/${gif}`}>{gif}'s gif</Link>
-            </li>
-          ))
-        }
-      </ul>
+      <div className="App-main">
+        <div className="App-results">
+          <h3 className="App-tittle">Last search</h3>
+          <ListOfGifs gifs={gifs!} />
+        </div>
+        <div className="App-category">
+          <Trending />          
+        </div>
+      </div>
     </Fragment>
   )
 }

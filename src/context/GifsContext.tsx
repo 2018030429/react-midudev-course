@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GifModel } from "../models/Gif";
+import { GifModel } from "models/Gif";
 
 interface ContextArgs {
   gifs?: GifModel[],

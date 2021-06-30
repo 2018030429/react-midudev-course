@@ -2,7 +2,7 @@ import React from 'react'
 import './styles.css';
 
 // * Interface
-import { GifModel } from '../../models/Gif';
+import { GifModel } from 'models/Gif';
 
 // * Components
 import Gif from "../Gif/Gif";

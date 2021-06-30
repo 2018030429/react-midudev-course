@@ -3,7 +3,7 @@ import './Gif.css'
 import { Link } from "wouter";
 
 // * Intefaces
-import { GifModel } from "../../models/Gif";
+import { GifModel } from "models/Gif";
 
 interface Props {
   gif: GifModel
