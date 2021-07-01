@@ -18,23 +18,21 @@ const useGifs = (keyword?:string) => {
 
   useEffect(() => {
     setLoading(true);
-    getGifs(keywordToUse).then(setGifs).then(_ => {
+    getGifs({keyword:keywordToUse}).then(setGifs).then(_ => {
       setLoading(false);
       localStorage.setItem('lastkeyword', keywordToUse);
     });
-  }, [setGifs, keywordToUse]);
+  }, [setGifs, keywordToUse,keyword]);
 
   useEffect(() => {
     if (page === INITIAL_PAGE) return;
 
     setLoadingNextPage(true);
-
-    getGifs(keywordToUse, page)
+    getGifs({keyword:keywordToUse, page})
       .then(nextGifs => {
-        setGifs!(prevGifs => prevGifs.concat(nextGifs));
+        setGifs!(prevGifs => prevGifs.concat(...nextGifs));
         setLoadingNextPage(false);
       })
-
   }, [page, keywordToUse, setGifs]);
 
   return { loading, gifs, setPage, loadingNextPage }

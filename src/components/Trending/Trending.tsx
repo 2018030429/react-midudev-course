@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useRef } from 'react'
 
 // * Custom Hook
 import { useNearScreen } from 'hooks/useNearScreen';
@@ -10,7 +10,8 @@ const TrendingSearches = React.lazy(
 )
 
 const LazyTrending = () => {
-  const {isNearScreen, elementRef} = useNearScreen();
+  const elementRef = useRef<HTMLDivElement>(null);
+  const { isNearScreen } = useNearScreen({ externalRef: elementRef? elementRef: null  });
 
   return(
     <div ref={elementRef}>

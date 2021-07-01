@@ -1,24 +1,35 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-const useNearScreen = (distance = '100px') => {
-  const elementRef = useRef<HTMLDivElement>(null);
+interface HookArgs<T> {
+  distance?: string,
+  externalRef: React.RefObject<T> | null,
+  once?: boolean
+}
+
+const useNearScreen = <T extends Element>({ distance = '100px', externalRef, once = true }:HookArgs<T>) => {
   const [isNearScreen, setShow] = useState(false);
+  const fromRef = useRef<T>(null);
 
   useEffect(() => {
+
+    const element = externalRef ? externalRef.current : fromRef.current;
+
     const onChange = (entries:IntersectionObserverEntry[], observer:IntersectionObserver) => {
-      const element = entries[0];
-      if (element.isIntersecting) {
+      const el = entries[0];
+      if (el.isIntersecting) {
         setShow(true); 
-        observer.disconnect();
+        once && observer.disconnect();
+      } else {
+        !once && setShow(false);
       }
     }
 
     const observer = new IntersectionObserver(onChange, { rootMargin: distance });
-    observer.observe(elementRef.current!);
+    if (element) observer.observe(element);
     return () => observer.disconnect();
   });
 
-  return { isNearScreen, elementRef };
+  return { isNearScreen };
 }
 
 export { useNearScreen };
