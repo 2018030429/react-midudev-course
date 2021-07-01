@@ -10,11 +10,10 @@ const TrendingSearches = React.lazy(
 )
 
 const LazyTrending = () => {
-  const elementRef = useRef<HTMLDivElement>(null);
-  const { isNearScreen } = useNearScreen({ externalRef: elementRef? elementRef: null  });
+  const { isNearScreen, fromRef } = useNearScreen<HTMLDivElement>({ distance: '0px' });
 
   return(
-    <div ref={elementRef}>
+    <div ref={fromRef}>
       <Suspense fallback={<Spinner/>}>
         { isNearScreen? <TrendingSearches/> : <Spinner/> }
       </Suspense>

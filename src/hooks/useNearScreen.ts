@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 interface HookArgs<T> {
   distance?: string,
-  externalRef: React.RefObject<T> | null,
+  externalRef?: React.RefObject<T> | null,
   once?: boolean
 }
 
@@ -11,7 +11,7 @@ const useNearScreen = <T extends Element>({ distance = '100px', externalRef, onc
   const fromRef = useRef<T>(null);
 
   useEffect(() => {
-
+    let observer: IntersectionObserver;
     const element = externalRef ? externalRef.current : fromRef.current;
 
     const onChange = (entries:IntersectionObserverEntry[], observer:IntersectionObserver) => {
@@ -24,12 +24,22 @@ const useNearScreen = <T extends Element>({ distance = '100px', externalRef, onc
       }
     }
 
-    const observer = new IntersectionObserver(onChange, { rootMargin: distance });
-    if (element) observer.observe(element);
-    return () => observer.disconnect();
+    Promise.resolve(
+      typeof IntersectionObserver != 'undefined'
+        ? IntersectionObserver
+        : import('intersection-observer'!)
+    ).then(() => {
+      observer = new IntersectionObserver(onChange, { 
+        rootMargin: distance 
+      });
+
+      if (element) observer.observe(element);
+    });
+
+    return () => observer && observer.disconnect();
   });
 
-  return { isNearScreen };
+  return { isNearScreen, fromRef };
 }
 
 export { useNearScreen };
