@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import Gif from 'components/Gif/Gif';
+import { Redirect } from 'wouter';
+import { Helmet } from "react-helmet";
 
 // * Custom Hooks
-import { useGlobalGifs } from 'hooks/useGlobalGifs';
+import useSingleGif from 'hooks/useSingleGif';
+import Spinner from 'components/Spinner/Spinner';
 
 interface Props {
   params: {
@@ -11,14 +14,31 @@ interface Props {
 }
 
 const Detail = ({ params }:Props) => {
-  const gifs = useGlobalGifs();
+  const { gif, isLoading, isError } = useSingleGif({ id: params.id })
+  const title = gif? gif.title : '';
 
-  const gif = gifs?.find(singleGif => singleGif.id === params.id);
-
-  console.log(gif);
+  if (isLoading) {
+    return(
+      <Fragment>
+        <Helmet>
+          <title>Loading...</title>
+        </Helmet>
+        <Spinner />
+      </Fragment>
+    );
+  }
+    
+  if (isError) return <Redirect to='/404' />
+  if (!gif) return null;
 
   return (
-    <Gif gif={gif!} />
+    <Fragment>
+      <Helmet>
+        <title>{title} | Giffy</title>
+      </Helmet>
+      <h3 className="App-title">{ gif?.title }</h3>      
+      <Gif gif={gif!} />
+    </Fragment>
   )
 }
 

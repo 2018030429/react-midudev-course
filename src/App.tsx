@@ -7,6 +7,7 @@ import { Route, Link } from "wouter";
 // * Components
 import SearchResults from './pages/SearchResults/SearchResults';
 import Detail from './pages/Detail/Detail';
+import ErrorPage from 'pages/ErrorPage/ErrorPage';
 
 // * Contexts
 import { GifsContextProvider } from './context/GifsContext';
@@ -28,6 +29,7 @@ function App() {
             <Route path="/" component={Home} />
             <Route path="/search/:keyword" component={SearchResults} />
             <Route path="/gif/:id" component={Detail} />
+            <Route path="/404" component={ErrorPage} />
           </GifsContextProvider>
         </section>
       </Suspense>

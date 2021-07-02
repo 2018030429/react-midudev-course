@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useRef, useCallback } from 'react';
+import { Helmet } from 'react-helmet';
 
 // * Components
 import ListOfGifs from 'components/ListOfGifs/ListOfGifs';
@@ -8,6 +9,7 @@ import Spinner from 'components/Spinner/Spinner';
 import { useGifs } from 'hooks/useGifs';
 import { useNearScreen } from 'hooks/useNearScreen';
 import debounce from 'just-debounce-it';
+import useSEO from 'hooks/useSEO';
 
 interface Props {
   params: {
@@ -23,6 +25,8 @@ const SearchResults = ({ params }:Props) => {
     externalRef: loading? null : externalRef,
     once: false 
   });
+
+  const title = gifs? `${gifs.length} Results of ${decodeURI(keyword)}` : '';
   
   const debounceHandleNextPage = useCallback(debounce(
     () => setPage(prevPage => prevPage + 1), 500
@@ -38,6 +42,10 @@ const SearchResults = ({ params }:Props) => {
         loading
           ? <Spinner/> 
           : <>
+            <Helmet>
+              <title>{title}</title>
+              <meta name="description" content={`Search of ${ title }`}></meta>
+            </Helmet>
             <h3 className="App-title">
               {decodeURI(keyword)}
             </h3>
