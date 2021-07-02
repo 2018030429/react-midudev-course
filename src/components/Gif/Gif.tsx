@@ -1,3 +1,4 @@
+import React from "react";
 import './Gif.css'
 
 import { Link } from "wouter";
@@ -20,4 +21,4 @@ const Gif = ({ gif }:Props) => {
   )
 }
 
-export default Gif;
+export default React.memo(Gif);

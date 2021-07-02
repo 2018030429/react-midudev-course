@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useCallback } from 'react'
 import { useLocation } from "wouter";
 
 // * Custom Hooks
@@ -7,28 +7,19 @@ import { useGifs } from 'hooks/useGifs';
 // * Components
 import ListOfGifs from 'components/ListOfGifs/ListOfGifs';
 import Trending from 'components/Trending/Trending';
+import SearchForm from 'components/SearchForm/SearchForm';
 
 const Home = () => {
-  const [ keyword, setKeyword ] = useState('');
   const [ path, pushLocation ] = useLocation();
-  const { loading, gifs } = useGifs();
+  const { gifs } = useGifs();
 
-  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(({ keyword }:{ keyword:string }) => {
     pushLocation(`/search/${keyword}`);
-  }
-
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
-  } 
+  }, [pushLocation]);
 
   return (
     <Fragment>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Search a gif here..."
-          value={keyword} onChange={handleChange} />
-        <button>Search!!</button>
-      </form>
+      <SearchForm onSubmit={handleSubmit} />
       <div className="App-main">
         <div className="App-results">
           <h3 className="App-tittle">Last search</h3>

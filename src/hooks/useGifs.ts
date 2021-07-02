@@ -18,7 +18,8 @@ const useGifs = (keyword?:string) => {
 
   useEffect(() => {
     setLoading(true);
-    getGifs({keyword:keywordToUse}).then(setGifs).then(_ => {
+    getGifs({keyword:keywordToUse}).then(gifs => {
+      setGifs!(gifs);
       setLoading(false);
       localStorage.setItem('lastkeyword', keywordToUse);
     });
