@@ -1,26 +1,27 @@
 import React, { Fragment, useEffect, useRef, useCallback } from 'react';
+import debounce from 'just-debounce-it';
 import { Helmet } from 'react-helmet';
 
 // * Components
 import ListOfGifs from 'components/ListOfGifs/ListOfGifs';
 import Spinner from 'components/Spinner/Spinner';
+import SearchForm from 'components/SearchForm/SearchForm';
 
 // * Custom Hooks
 import { useGifs } from 'hooks/useGifs';
 import { useNearScreen } from 'hooks/useNearScreen';
-import debounce from 'just-debounce-it';
-import useSEO from 'hooks/useSEO';
 
 interface Props {
   params: {
-    keyword:string
+    keyword:string,
+    rating:string
   }
 }
 
 const SearchResults = ({ params }:Props) => {
-  const { keyword } = params;
+  const { keyword, rating = 'g' } = params;
   const externalRef = useRef<HTMLDivElement>(null);
-  const { gifs, loading, setPage } = useGifs(keyword);
+  const { gifs, loading, setPage } = useGifs(keyword, rating);
   const { isNearScreen } = useNearScreen({
     externalRef: loading? null : externalRef,
     once: false 
@@ -49,6 +50,9 @@ const SearchResults = ({ params }:Props) => {
             <h3 className="App-title">
               {decodeURI(keyword)}
             </h3>
+            <header className="o-header">
+              <SearchForm initialKeyword={keyword} initialRating={rating} />
+            </header>
             <ListOfGifs gifs={gifs!} />
             <div className="visor" ref={externalRef}></div>
           </>

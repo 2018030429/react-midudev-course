@@ -14,9 +14,9 @@ const fromApiResponseToGifs = (apiResponse:any) => {
   return gifs as GifModel[];
 }
 
-const getGifs = async ({keyword='chihuahua', limit=5, page=0}) => {
+const getGifs = async ({keyword='chihuahua', rating='g',limit=5, page=0}) => {
   const apiURL = 
-    `${API_BASE}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=${page*limit}&rating=g&lang=en`;
+    `${API_BASE}/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=${page*limit}&rating=${rating}&lang=en`;
   return fetch(apiURL)
   .then(res => res.json())
   .then(fromApiResponseToGifs);

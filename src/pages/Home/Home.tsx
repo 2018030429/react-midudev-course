@@ -1,5 +1,4 @@
-import React, { Fragment, useCallback } from 'react'
-import { useLocation } from "wouter";
+import React, { Fragment } from 'react'
 import { Helmet } from 'react-helmet';
 
 // * Custom Hooks
@@ -11,19 +10,14 @@ import Trending from 'components/Trending/Trending';
 import SearchForm from 'components/SearchForm/SearchForm';
 
 const Home = () => {
-  const [ _, pushLocation ] = useLocation();
   const { gifs } = useGifs();
-
-  const handleSubmit = useCallback(({ keyword }:{ keyword:string }) => {
-    pushLocation(`/search/${keyword}`);
-  }, [pushLocation]);
 
   return (
     <Fragment>
       <Helmet>
         <title>Home | Giffy</title>
       </Helmet>
-      <SearchForm onSubmit={handleSubmit} />
+      <SearchForm  />
       <div className="App-main">
         <div className="App-results">
           <h3 className="App-tittle">Last search</h3>
